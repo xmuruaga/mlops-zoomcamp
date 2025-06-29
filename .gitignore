@@ -3,6 +3,13 @@ mlruns/
 mlartifacts/
 backend.db
 mlflow.db
+mlruns/
+artifacts/
+**/artifacts/
+
+# ──────────  Data  ──────────────────────────────────────────────────────────
+*.parquet               # any stray parquet files
+output/                 # pre-processed train/val/test .pkl files
 
 # ── Generated evaluation artifacts ──
 confusion_matrix*.png
