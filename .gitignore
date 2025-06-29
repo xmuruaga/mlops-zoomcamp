@@ -1,3 +1,47 @@
+# ── MLflow outputs ───────────────────────────
+mlruns/
+mlartifacts/
+backend.db
+mlflow.db
+
+# ── Generated evaluation artifacts ──
+confusion_matrix*.png
+confusion_matrix*.csv
+
+# ── Trained model artifacts ───────────────────
+# Python/R/Scikit-learn/LightGBM
+*.pkl
+*.joblib
+
+# TensorFlow / Keras
+*.h5
+*.pb
+*.ckpt
+*.tf
+*.tflite
+
+# PyTorch
+*.pt
+*.pth
+*.bin
+
+# ONNX
+*.onnx
+
+# CoreML
+*.mlmodel
+
+# XGBoost binary model
+*.model
+
+# CatBoost
+*.cbm
+
+# Hugging Face safetensors
+*.safetensors
+
+
+# ── Other files ────────────────────────────
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
