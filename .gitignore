@@ -243,3 +243,10 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+03-orchestration/airflow/airflow.cfg
+.gitignore
+03-orchestration/homework/run_id.txt
+03-orchestration/homework/models/preprocessor.b
+03-orchestration/airflow/simple_auth_manager_passwords.json.generated
+03-orchestration/airflow/airflow.db
+03-orchestration/airflow/logs/dag_processor/latest
