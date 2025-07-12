@@ -12,21 +12,22 @@
 # 7. Organized code into functions for modularity and reusability.
 # 8. Ensured the script is self-contained and can be run independently from the command line.
 
-# Execute it: python duration-prediction.py --year=2021 --month=1
+# Execute it: python duration-prediction.py --year=2023 --month=03
 
 #!/usr/bin/env python
 # coding: utf-8
 
 import pickle
 from pathlib import Path
-
 import pandas as pd
 import xgboost as xgb
+import mlflow
 
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.metrics import root_mean_squared_error
+from sklearn.pipeline import Pipeline
+from xgboost import XGBRegressor
 
-import mlflow
 
 mlflow.set_tracking_uri("http://localhost:5000")
 mlflow.set_experiment("nyc-taxi-experiment")
@@ -67,69 +68,61 @@ def create_X(df, dv=None):
     return X, dv
 
 
-def train_model(X_train, y_train, X_val, y_val, dv):
+
+
+def train_model(X_train, y_train, X_val, y_val, dv, dicts_train, dicts_val):
     with mlflow.start_run() as run:
-        train = xgb.DMatrix(X_train, label=y_train)
-        valid = xgb.DMatrix(X_val, label=y_val)
+        # Build pipeline
+        pipe = Pipeline([
+            ("dv", DictVectorizer(sparse=True)),
+            ("xgb", XGBRegressor(
+                n_estimators=30,
+                learning_rate=0.09585355369315604,
+                max_depth=30,
+                min_child_weight=1.060597050922164,
+                reg_alpha=0.018060244040060163,
+                reg_lambda=0.011658731377413597,
+                objective="reg:squarederror",
+                seed=42,
+                n_jobs=-1
+            ))
+        ])
 
-        best_params = {
-            'learning_rate': 0.09585355369315604,
-            'max_depth': 30,
-            'min_child_weight': 1.060597050922164,
-            'objective': 'reg:linear',
-            'reg_alpha': 0.018060244040060163,
-            'reg_lambda': 0.011658731377413597,
-            'seed': 42
-        }
-
-        mlflow.log_params(best_params)
-
-        booster = xgb.train(
-            params=best_params,
-            dtrain=train,
-            num_boost_round=30,
-            evals=[(valid, 'validation')],
-            early_stopping_rounds=50
-        )
-
-        y_pred = booster.predict(valid)
+        # Fit pipeline on raw dicts
+        pipe.fit(dicts_train, y_train)
+        y_pred = pipe.predict(dicts_val)
         rmse = root_mean_squared_error(y_val, y_pred)
         mlflow.log_metric("rmse", rmse)
 
-        with open("models/preprocessor.b", "wb") as f_out:
-            pickle.dump(dv, f_out)
-        mlflow.log_artifact("models/preprocessor.b", artifact_path="preprocessor")
-
-        import numpy as np
-        from mlflow.models.signature import infer_signature
-        input_example = X_val[0:2] if hasattr(X_val, 'shape') else np.array(list(X_val)[:2])
-        signature = infer_signature(X_val, y_val)
-
-        mlflow.xgboost.log_model(
-            booster,
-            artifact_path="models_mlflow",
-            signature=signature,
-            input_example=input_example
+        mlflow.sklearn.log_model(
+            sk_model=pipe,
+            artifact_path="model"
         )
 
         return run.info.run_id
 
 
+
 def run(year, month):
     df_train = read_dataframe(year=year, month=month)
-
     next_year = year if month < 12 else year + 1
     next_month = month + 1 if month < 12 else 1
     df_val = read_dataframe(year=next_year, month=next_month)
 
-    X_train, dv = create_X(df_train)
-    X_val, _ = create_X(df_val, dv)
+    categorical = ['PU_DO']
+    numerical = ['trip_distance']
+    dicts_train = df_train[categorical + numerical].to_dict(orient='records')
+    dicts_val = df_val[categorical + numerical].to_dict(orient='records')
 
     target = 'duration'
     y_train = df_train[target].values
     y_val = df_val[target].values
 
-    run_id = train_model(X_train, y_train, X_val, y_val, dv)
+    # dv is not needed anymore, but kept for compatibility
+    X_train, dv = create_X(df_train)
+    X_val, _ = create_X(df_val, dv)
+
+    run_id = train_model(X_train, y_train, X_val, y_val, dv, dicts_train, dicts_val)
     print(f"MLflow run_id: {run_id}")
     return run_id
 
