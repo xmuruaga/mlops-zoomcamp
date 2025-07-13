@@ -254,3 +254,6 @@ cython_debug/
 04-deployment/web-service-fastapi-mlflow/run_id.txt
 04-deployment/homework/output/yellow_tripdata_2023-03.parquet
 04-deployment/web-service-fastapi-mlflow/models/model
+04-deployment/homework/output/yellow_tripdata_2023-04.parquet
+.gitignore
+04-deployment/homework/output/yellow_tripdata_2023-05.parquet
