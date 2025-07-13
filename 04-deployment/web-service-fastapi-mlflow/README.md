@@ -71,7 +71,7 @@ curl -X POST \
 
 ### 1. Build the Docker Image
 ```bash
-docker build --no-cache -t duration-prediction-service -f Dockerfile.txt .
+docker build --no-cache -t duration-prediction-service .
 ```
 
 ### 2. Run the Docker Container
