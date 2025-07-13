@@ -62,7 +62,7 @@ To get the most out of this course, you should have prior experience with:
 
 ### [Module 4: Model Deployment](04-deployment)
 - Deployment strategies: online (web, streaming) vs. offline (batch)
-- Deploying with Flask (web service)
+- Deploying with FastAPI (web service)
 - Streaming deployment with AWS Kinesis & Lambda
 - Batch scoring for offline processing
 - Homework

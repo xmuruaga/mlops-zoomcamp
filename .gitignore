@@ -250,3 +250,7 @@ cython_debug/
 03-orchestration/airflow/simple_auth_manager_passwords.json.generated
 03-orchestration/airflow/airflow.db
 03-orchestration/airflow/logs/dag_processor/latest
+04-deployment/web-service-fastapi-mlflow/models/preprocessor.b
+04-deployment/web-service-fastapi-mlflow/run_id.txt
+04-deployment/homework/output/yellow_tripdata_2023-03.parquet
+04-deployment/web-service-fastapi-mlflow/models/model
