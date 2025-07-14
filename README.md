@@ -55,16 +55,15 @@ To get the most out of this course, you should have prior experience with:
 - Homework
 
 ### [Module 3: Orchestration & ML Pipelines](03-orchestration)
-
 - Workflow orchestration
 - Airflow
 - Homework
 
 ### [Module 4: Model Deployment](04-deployment)
 - Deployment strategies: online (web, streaming) vs. offline (batch)
-- Deploying with FastAPI (web service)
-- Streaming deployment with AWS Kinesis & Lambda
-- Batch scoring for offline processing
+- Deploying with FastAPI (web service) with MLFlow
+- Batch scoring for offline processing with S3, MLFlow and Airflow
+- Streaming deployment with AWS Kinesis & Lambda [not implemented]
 - Homework
 
 ### [Module 5: Model Monitoring](05-monitoring)
