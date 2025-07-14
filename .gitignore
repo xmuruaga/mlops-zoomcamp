@@ -257,3 +257,8 @@ cython_debug/
 04-deployment/homework/output/yellow_tripdata_2023-04.parquet
 .gitignore
 04-deployment/homework/output/yellow_tripdata_2023-05.parquet
+04-deployment/batch-s3-mlflow-airflow/run_id.txt
+04-deployment/batch-s3-mlflow-airflow/airflow/airflow.db
+.gitignore
+04-deployment/batch-s3-mlflow-airflow/airflow/logs/dag_processor/latest
+04-deployment/batch-s3-mlflow-airflow/airflow/airflow.cfg

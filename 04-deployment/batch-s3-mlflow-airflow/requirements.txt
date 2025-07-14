@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+mlflow
+scikit-learn
+pandas
+numpy
+boto3
+xgboost
+psutil
+awscli
+s3fs
+apache-airflow
+pyarrow
+apache-airflow-providers-fab
